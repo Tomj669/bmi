@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./output.css" rel="stylesheet">
+  <style>
+    /* Custom CSS for placeholder */
+    .placeholder-right::placeholder {
+      text-align: right; /* Align the placeholder text to the right */
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-[#071952]">
+    <div class="text-6xl font-semibold font-sans text-white">
+        BMI Calculator
+    </div>
+  </div>
+
+  <div class="flex justify-center font-medium mt-[200px]">
+    <div class="flex flex-col gap-3 bg-slate-200 border border-gray-500 px-24 py-14">
+        <div>Age<input class='w-[100px] border-blue-900 shadow-md border ml-[23px]' type="text" id="age" name="age"> <span class="ml-4"> 2 - 120</span></div>  
+        <div> Gender 
+            <input type="radio" id="male" name="gender" value="Male"> Male 
+            <input type="radio" id="female" name="gender" value="Female"> Female 
+        </div> 
+        <div>Weight  <input class='border-blue-900 px-1 placeholder-right shadow-md border' type="text" id="weight" placeholder="Kg"></div> 
+        <div>Height <input class='border-blue-900 px-1 placeholder-right shadow-md border ml-[3.5px]' type="text" id="height" placeholder="cm"></div> 
+        <div class="flex justify-between mt-4">
+            <button class="bg-green-600 p-2" onclick="calculateBMI()">Calculate</button>
+            <button class="bg-gray-300 p-2" onclick="clearFields()">Clear</button>
+        </div>
+    </div>
+
+    <div class="mt-[75px] ml-20">
+        <div class="bg-green-600 text-3xl text-center mb-1">Results</div>
+        <div id="bmiValue" class="p-6 text-6xl font-bold"></div>
+        <div id="bmiStatus" class=" text-2xl font-bold text-center px-1"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to meters
+
+      if (!isNaN(weight) && !isNaN(height) && height > 0) {
+        const bmi = weight / (height * height);
+        document.getElementById('bmiValue').textContent = bmi.toFixed(2);
+
+        let status;
+        if (bmi < 18.5) {
+          status = 'UNDERWEIGHT';
+        } else if (bmi < 24.9) {
+          status = 'NORMAL WEIGHT';
+        } else if (bmi < 29.9) {
+          status = 'OVERWEIGHT';
+        } else {
+          status = 'OBESE';
+        }
+
+        document.getElementById('bmiStatus').textContent = status;
+        updateStatusColor(status);
+      } else {
+        alert('Please enter valid weight and height.');
+      }
+    }
+
+    function clearFields() {
+      document.getElementById('age').value = '';
+      document.getElementById('weight').value = '';
+      document.getElementById('height').value = '';
+      document.getElementById('bmiValue').textContent = '';
+      document.getElementById('bmiStatus').textContent = '';
+    }
+
+    function updateStatusColor(status) {
+      const bmiValueDiv = document.getElementById('bmiValue');
+      const bmiStatusDiv = document.getElementById('bmiStatus');
+      
+      if (status === 'UNDERWEIGHT') {
+        bmiValueDiv.style.backgroundColor = 'blue';
+        bmiStatusDiv.style.backgroundColor = 'blue';
+      } else if (status === 'NORMAL WEIGHT') {
+        bmiValueDiv.style.backgroundColor = 'green';
+        bmiStatusDiv.style.backgroundColor = 'green';
+      } else if (status === 'OVERWEIGHT') {
+        bmiValueDiv.style.backgroundColor = 'orange';
+        bmiStatusDiv.style.backgroundColor = 'orange';
+      } else {
+        bmiValueDiv.style.backgroundColor = 'red';
+        bmiStatusDiv.style.backgroundColor = 'red';
+      }
+    }
+  </script>
+</body>
+</html>
